@@ -3,6 +3,11 @@ class crypto extends App {
 
 
   }
+  
+  def checkHash(args: Array[String]): Unit = {
+
+
+  }
 
   def <update hive/spark function>
 
