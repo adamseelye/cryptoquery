@@ -1,4 +1,4 @@
-class monero {
+object monero {
   def api(args: Array[String]): Unit = {
 
 

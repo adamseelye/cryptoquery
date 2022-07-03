@@ -1,4 +1,4 @@
-class api extends App {
+object api extends App {
   ???
 
 
