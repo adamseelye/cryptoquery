@@ -13,7 +13,7 @@ class ui {
     println("(U)pdate or (D)elete Account")
     println("(E)xit\n")
 
-    val choice = readLine("Please enter here: ")
+    // val choice = readLine("Please enter here: ")
 
   }
 

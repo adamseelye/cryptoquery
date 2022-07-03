@@ -1,5 +1,5 @@
-class hiveQueries extends App {
-  def <constructor>
+class sparkQueries extends App {
+  // def <constructor>
 
   def login(args: Array[String]): Unit = {
 

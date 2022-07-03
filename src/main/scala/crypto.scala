@@ -9,6 +9,6 @@ class crypto extends App {
 
   }
 
-  def <update hive/spark function>
+  // def <update hive/spark function>
 
 }
