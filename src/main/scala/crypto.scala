@@ -1,4 +1,4 @@
-class crypto extends App {
+object crypto extends App {
   def hashPassword(args: Array[String]): Unit = {
 
 

@@ -6,16 +6,13 @@ import java.time.format.DateTimeFormatter
 
 object dbtest {
   def main(args: Array[String]): Unit = {
-    // create a spark session
-    // for Windows
-    //System.setProperty("hadoop.home.dir", "C:\\Hadoop3")
     val spark = SparkSession
       .builder
       .appName("hello hive")
       .master("spark://trainingsrv:7077")
       .config("spark.master", "local[*]")
-      //.config("spark.driver.allowMultipleContexts","true")
-      //.enableHiveSupport()
+      .config("spark.driver.allowMultipleContexts","true")
+      .enableHiveSupport()
       .getOrCreate()
     Logger.getLogger("org").setLevel(Level.ERROR)
     println("created spark session")

@@ -1,4 +1,4 @@
-class sparkQueries extends App {
+object sparkQueries extends App {
   // def <constructor>
 
   def login(args: Array[String]): Unit = {

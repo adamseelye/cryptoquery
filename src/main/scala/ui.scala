@@ -1,4 +1,4 @@
-class ui {
+object ui {
   def greeting(args: Array[String]): Unit = {
     println("~~~CRYPTOQUERY~~~\n")
     println("~Asking questions of the Monero blockchain~")

@@ -4,7 +4,7 @@ import java.sql.ResultSet
 import java.sql.Statement
 import java.sql.DriverManager
 
-class connector extends App {
+object connector extends App {
   def hiveCxn (args: Array[String]): Unit = {
     val hiveDriver = "org.apache.hadoop.hive.jdbc.HiveDriver"
 
