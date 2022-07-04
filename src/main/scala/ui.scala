@@ -15,9 +15,20 @@ object ui {
     println("(U)pdate or (D)elete Account")
     println("(E)xit\n")
 
-    val choice = readLine("Please enter here: ")
+    var choice = readLine("Please enter here: ")
 
-    println(choice)
+    if (choice == "l" || choice == "L")
+      println("choice was L")
+    else if (choice == "c" || choice == "C")
+      println("choice was C")
+    else if (choice == "u" || choice == "U")
+      println("choice was U")
+    else if (choice == "d" || choice == "D")
+      println("choice was D")
+    else if (choice == "e" || choice == "E")
+      println("choice was E")
+    else
+      println("something else: " + choice)
 
   }
 
