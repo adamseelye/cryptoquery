@@ -2,7 +2,7 @@ import scala.io.StdIn.readLine
 
 object ui {
   def greeting(args: Array[String]): Unit = {
-    println("~~~CRYPTOQUERY~~~\n")
+    println("~~~CRYPTOQUERY~~~")
     println("~Asking questions of the Monero blockchain~\n")
     println("What would you like to do?\n")
 
