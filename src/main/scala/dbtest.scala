@@ -22,6 +22,7 @@ object dbtest {
     val pass = "MN3ttXP9LE#?"
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
     val loadingDate = LocalDateTime.of(2001, 3, 9, 0, 0, 0)
     val x = loadingDate.format(formatter)
 
@@ -32,7 +33,6 @@ object dbtest {
 
     import spark.implicits._
 
-    //val df4 = Seq((13, "start", "2001-03-09")).toDF("user_id", "action", "date")
     val df4 = Seq((13, "start", x)).toDF("user_id", "action", "date")
     df4.show()
 

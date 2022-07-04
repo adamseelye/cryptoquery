@@ -1,4 +1,4 @@
 object cryptoquery extends App {
-  println("cryptoquery")
+  val start = ui.main(Array())
 
 }
