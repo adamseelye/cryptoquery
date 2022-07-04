@@ -3,8 +3,7 @@ import scala.io.StdIn.readLine
 object ui {
   def greeting(args: Array[String]): Unit = {
     println("~~~CRYPTOQUERY~~~\n")
-    println("~Asking questions of the Monero blockchain~")
-    println("\n")
+    println("~Asking questions of the Monero blockchain~\n")
     println("What would you like to do?\n")
 
   }
@@ -15,7 +14,7 @@ object ui {
     println("(U)pdate or (D)elete Account")
     println("(E)xit\n")
 
-    var choice = readLine("Please enter here: ")
+    val choice = readLine("Please enter here: ")
 
     if (choice == "l" || choice == "L")
       println("choice was L")
