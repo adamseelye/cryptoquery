@@ -25,4 +25,6 @@ object sparkQueries extends App {
       .option("password", pass).load()
     sourceDf.show()
   }
+
+  sparkCxn(Array())
 }

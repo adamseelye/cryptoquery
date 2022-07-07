@@ -1,7 +1,3 @@
-[debug] not up to date. inChanged = true, force = false
-[debug] Updating ...
-[warn] 
-[warn] 	Note: Unresolved dependencies path:
 [error] sbt.librarymanagement.ResolveException: Error downloading com.github.t3hnar.bcrypt:scala-bcrypt_2.13:4.3.1
 [error]   Not found
 [error]   Not found
@@ -37,7 +33,7 @@
 [error] 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
 [error] 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
 [error] 	at java.lang.Thread.run(Thread.java:750)
-[error] (update) sbt.librarymanagement.ResolveException: Error downloading com.github.t3hnar.bcrypt:scala-bcrypt_2.13:4.3.1
+[error] (ssExtractDependencies) sbt.librarymanagement.ResolveException: Error downloading com.github.t3hnar.bcrypt:scala-bcrypt_2.13:4.3.1
 [error]   Not found
 [error]   Not found
 [error]   not found: /home/gentooadmin/.ivy2/localcom.github.t3hnar.bcrypt/scala-bcrypt_2.13/4.3.1/ivys/ivy.xml
