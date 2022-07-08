@@ -1,4 +1,4 @@
-package com.github.t3hnar
+package com
 
 import org.mindrot.jbcrypt.{BCrypt => B}
 
@@ -7,7 +7,7 @@ import scala.util.{Failure, Try}
 /**
  * @author Yaroslav Klymko
  */
-package object bcrypt {
+package object Bcrypt {
 
   // Maybe consider moving the non deprecated methods no another package with the same method names (loose the "bounded")
   // This way the only change the developers would need to make is change the package

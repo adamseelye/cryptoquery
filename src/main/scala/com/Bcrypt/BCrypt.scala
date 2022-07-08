@@ -1,4 +1,4 @@
-package com.github.t3hnar.bcrypt
+package com
 
 import org.mindrot.jbcrypt.{BCrypt => B}
 

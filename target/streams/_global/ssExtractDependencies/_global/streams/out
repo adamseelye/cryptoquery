@@ -1,8 +1,8 @@
-[error] sbt.librarymanagement.ResolveException: Error downloading com.github.t3hnar.bcrypt:scala-bcrypt_2.13:4.3.1
+[error] sbt.librarymanagement.ResolveException: Error downloading org.mindrot.jbcrypt:BCrypt_2.13:0.4
 [error]   Not found
 [error]   Not found
-[error]   not found: /home/gentooadmin/.ivy2/localcom.github.t3hnar.bcrypt/scala-bcrypt_2.13/4.3.1/ivys/ivy.xml
-[error]   not found: https://repo1.maven.org/maven2/com/github/t3hnar/bcrypt/scala-bcrypt_2.13/4.3.1/scala-bcrypt_2.13-4.3.1.pom
+[error]   not found: /home/gentooadmin/.ivy2/localorg.mindrot.jbcrypt/BCrypt_2.13/0.4/ivys/ivy.xml
+[error]   not found: https://repo1.maven.org/maven2/org/mindrot/jbcrypt/BCrypt_2.13/0.4/BCrypt_2.13-0.4.pom
 [error] 	at lmcoursier.CoursierDependencyResolution.unresolvedWarningOrThrow(CoursierDependencyResolution.scala:345)
 [error] 	at lmcoursier.CoursierDependencyResolution.$anonfun$update$38(CoursierDependencyResolution.scala:314)
 [error] 	at scala.util.Either$LeftProjection.map(Either.scala:573)
@@ -33,8 +33,8 @@
 [error] 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
 [error] 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
 [error] 	at java.lang.Thread.run(Thread.java:750)
-[error] (ssExtractDependencies) sbt.librarymanagement.ResolveException: Error downloading com.github.t3hnar.bcrypt:scala-bcrypt_2.13:4.3.1
+[error] (ssExtractDependencies) sbt.librarymanagement.ResolveException: Error downloading org.mindrot.jbcrypt:BCrypt_2.13:0.4
 [error]   Not found
 [error]   Not found
-[error]   not found: /home/gentooadmin/.ivy2/localcom.github.t3hnar.bcrypt/scala-bcrypt_2.13/4.3.1/ivys/ivy.xml
-[error]   not found: https://repo1.maven.org/maven2/com/github/t3hnar/bcrypt/scala-bcrypt_2.13/4.3.1/scala-bcrypt_2.13-4.3.1.pom
+[error]   not found: /home/gentooadmin/.ivy2/localorg.mindrot.jbcrypt/BCrypt_2.13/0.4/ivys/ivy.xml
+[error]   not found: https://repo1.maven.org/maven2/org/mindrot/jbcrypt/BCrypt_2.13/0.4/BCrypt_2.13-0.4.pom

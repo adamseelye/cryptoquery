@@ -1,20 +1,19 @@
-import com.github.t3hnar.bcrypt._
+import com.Bcrypt._
 
 
 object crypto extends App {
-  def hashPassword(args: Array[String]): Unit = {
-    //"password".bcryptSafeBounded()    // simple hashing (doesn't work yet)
+  def hashPassword(): Unit = {
+    val salted = "password".bcryptSafeBounded
+    println(salted)
 
-    //val bcryptAndVerify = for {       // advanced hashing (doesn't work yet)
-    //      bcrypted <- "hello".bcryptBounded(12)
-    //      result <- "hello".isBcryptedSafeBounded(bcrypted)
-    //    } yield result
   }
   
-  def checkHash(args: Array[String]): Unit = {
-    // "password".isbcryptSafeBounded("<password hash>")    // doesn't work yet
+  def checkHash(): Unit = {
+    //"password".isbcryptSafeBounded("<password hash>")
 
   }
+
+  hashPassword()
 
   // def <update hive/spark function>
 

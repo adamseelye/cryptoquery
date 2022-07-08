@@ -1,6 +1,8 @@
+import scala.io.StdIn.readLine
+
 object hiveQueries {
-  def login(args: Array[String]): Unit = {
-    /* val password = // pass user password into this variable
+  def login(): Unit = {
+    /* val user_pass = readLine("Please enter your password: ")
     val checkpassword = // pass check password function into this variable
 
     if (checkpassword = true)
@@ -12,25 +14,27 @@ object hiveQueries {
      */
   }
 
-  def logout(args: Array[String]): Unit = {
+  def logout(): Unit = {
     /*
     set db login field to false
     display ('logged out')
-
+    ui.main(Array())
      */
   }
 
-  def createUser(args: Array[String]): Unit = {
-    /*
-    insert user into db with id, name
-    run password hashing on user supplied pword
-    insert pword into db user row
+  def createUser (): Unit = {
+    val uid = readLine("Please enter a username: ")
+    val name = readLine("Please enter your name: ")
+    val password = readLine("Please choose a strong password: ")
 
-     */
+    // <password hashing function>
+
+    // <SQL INSERT function> name, uid, password VALUES ? ? ?
+    // hive / spark cxn
 
   }
 
-  def checkPwd(args: Array[String]): Unit = {
+  def checkPwd(): Unit = {
     /*
     run password hash on user supplied input
     check db to see if hash matches stored hash
@@ -39,4 +43,16 @@ object hiveQueries {
      */
 
   }
+
+  def deleteUser (): Unit = {
+    // ?????
+
+  }
+
+  def updateUser (): Unit = {
+    // ?????
+
+  }
+
+
 }
