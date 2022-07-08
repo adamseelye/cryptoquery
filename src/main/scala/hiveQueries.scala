@@ -35,12 +35,8 @@ object hiveQueries {
   }
 
   def checkPwd(): Unit = {
-    /*
-    run password hash on user supplied input
-    check db to see if hash matches stored hash
-    login if match, logout if not
-
-     */
+    val check_pass = readLine("Please enter your password: ")
+    crypto.checkHash(check_pass)
 
   }
 

@@ -8,7 +8,7 @@ object sparkQueries extends App {
   def sparkCxn (): Unit = {
     val spark = SparkSession
       .builder
-      .appName("hello hive")
+      .appName("Spark Queries")
       .master("spark://trainingsrv:7077")
       .config("spark.master", "local[*]")
       .config("spark.driver.allowMultipleContexts", "true")
