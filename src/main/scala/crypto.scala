@@ -5,8 +5,8 @@ import org.apache.spark.sql.{SaveMode, SparkSession}
 import scala.language.postfixOps
 
 object crypto extends App {
-  def hashPassword(p: String): Unit = {
-    p.bcryptSafeBounded
+  def hashPassword(p: String): String = {
+    p.bcryptSafeBounded.get
   }
 
   def checkHash(c: String): String = {

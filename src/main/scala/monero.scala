@@ -1,10 +1,8 @@
 object monero {
-  def api(args: Array[String]): Unit = {
+  // should load monero data into hive
+  // could perform operations
 
-
-  }
-
-  def checkData(args: Array[String]): Unit = {
+  def checkData(): Unit = {
 
 
   }

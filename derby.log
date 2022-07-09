@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sat Jul 09 00:13:06 MDT 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0181-e197-1d34-00004cc2f670 
+on database directory /home/gentooadmin/proj1/cryptoquery/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@69a373fd 
+Loaded from file:/home/gentooadmin/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Amazon.com Inc.
+java.runtime.version=1.8.0_332-b08
+user.dir=/home/gentooadmin/proj1/cryptoquery
+os.name=Linux
+os.arch=amd64
+os.version=5.18.2-gentoo
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

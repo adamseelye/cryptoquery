@@ -27,7 +27,22 @@ object ui {
 
     } else if (choice == "c" || choice == "C") {
       println("Create a user account")
-      createUser()
+      println("Would you like to create an " +
+        "(A)dministrator account or a (N)ormal user account?")
+      println("Please bear in mind that only one admin account " +
+        "may exist in the database at a time.")
+
+      val u_type = readLine("Please enter your choice here: ")
+
+      if (u_type == "a" || u_type == "A") {
+        createAdmin()
+      } else if (u_type == "n" || u_type == "N") {
+        createUser()
+      } else {
+        println("Invalid input")
+        sys.exit(1)
+      }
+
 
     } else if (choice == "u" || choice == "U") {
       println("Update user information")

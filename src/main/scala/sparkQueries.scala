@@ -5,7 +5,7 @@ import org.apache.spark.sql.{SaveMode, SparkSession}
 object sparkQueries extends App {
   // def <constructor>
 
-  def sparkCxn (): Unit = {
+  def sparkCxn (uid: String, name: String, password: String): Unit = {
     val spark = SparkSession
       .builder
       .appName("Spark Queries")
@@ -21,21 +21,26 @@ object sparkQueries extends App {
     val user = "gentooadmin"
     val pass = "MN3ttXP9LE#?"
 
+    import spark.implicits._
+    val df4 = Seq((name, uid, password)).toDF("name", "uid", "password")
+    //df4.show()
+
+
     val sourceDf = spark.read.format("jdbc").option("url", url)
       .option("dbtable", "users").option("user", user)
       .option("password", pass).load()
+    //sourceDf.show()
+
+    df4.write.mode(SaveMode.Append).format("jdbc").option("url",url)
+      //df4.write.mode(SaveMode.Ignore).format("jdbc").option("url",url)
+      .option("dbtable","users").option("user",user)
+      .option("password",pass).save()
     sourceDf.show()
   }
-
-  sparkCxn()
-
 
 
   def login(): Unit = {
     val checkedPwd = checkPwd()
-
-
-
 
     if (checkedPwd == "true") { // use this for login logic
       println("Password Success").toString
@@ -57,10 +62,19 @@ object sparkQueries extends App {
     val name = readLine("Please enter your name: ")
     val password = readLine("Please choose a strong password: ")
 
-    crypto.hashPassword(password)
+    val hashed = crypto.hashPassword(password)
 
+    sparkCxn(name, uid, hashed)
+
+    // users loaded into MySQL db
     // <SQL INSERT function> name, uid, password VALUES ? ? ?
     // hive / spark cxn
+
+  }
+
+  def createAdmin(): Unit = {
+    println("This command may only be run once")
+    println("The program will exit if an Admin user already exists")
 
   }
 
