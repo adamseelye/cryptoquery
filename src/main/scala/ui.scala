@@ -1,5 +1,5 @@
 import scala.io.StdIn.readLine
-import hiveQueries._
+import sparkQueries._
 
 object ui {
   def greeting(): Unit = {
