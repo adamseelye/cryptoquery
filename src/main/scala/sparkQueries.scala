@@ -94,9 +94,7 @@ object sparkQueries extends App {
       .option("password", pass).load()
 
     sourceDf.createOrReplaceTempView("users1")
-    println("spark.sql query:")
     spark.sql(s"SELECT * FROM users1 WHERE uid = '$uid_in'").show()
-    println("dataframe:")
     val db_pass = spark.sql(s"SELECT `password` FROM users1 WHERE uid = '$uid_in'").toDF.first().getString(0)
 
     val checkedPwd = crypto.checkHash(check_pass, db_pass)
@@ -124,11 +122,33 @@ object sparkQueries extends App {
 
     val hashed = crypto.hashPassword(password)
 
-    sparkCxn(name, uid, hashed)
+    val spark = SparkSession
+      .builder
+      .appName("Spark Queries")
+      .master("spark://trainingsrv:7077")
+      .config("spark.master", "local[*]")
+      .config("spark.driver.allowMultipleContexts", "true")
+      .enableHiveSupport()
+      .getOrCreate()
+    Logger.getLogger("org").setLevel(Level.ERROR)
+    println("created spark session")
 
-    // users loaded into MySQL db
-    // <SQL INSERT function> name, uid, password VALUES ? ? ?
-    // hive / spark cxn
+    val url = "jdbc:mysql://trainingsrv:3306/practice"
+    val user = "gentooadmin"
+    val pass = "MN3ttXP9LE#?"
+
+    import spark.implicits._
+    val df4 = Seq((name, uid, hashed)).toDF("name", "uid", "password")
+
+    val sourceDf=spark.read.format("jdbc").option("url",url)
+      .option("dbtable","users").option("user",user)
+      .option("password",pass).load()
+
+    df4.write.mode(SaveMode.Append).format("jdbc").option("url",url)
+      //df4.write.mode(SaveMode.Ignore).format("jdbc").option("url",url)
+      .option("dbtable","users").option("user",user)
+      .option("password",pass).save()
+    sourceDf.show()
 
   }
 
@@ -139,7 +159,27 @@ object sparkQueries extends App {
   }
 
   def deleteUser (): Unit = {
-    // ?????
+    // DELETE FROM `practice`.`users` WHERE (`id` = '4');
+    val spark = SparkSession
+      .builder
+      .appName("Spark Queries")
+      .master("spark://trainingsrv:7077")
+      .config("spark.master", "local[*]")
+      .config("spark.driver.allowMultipleContexts", "true")
+      .enableHiveSupport()
+      .getOrCreate()
+    Logger.getLogger("org").setLevel(Level.ERROR)
+    println("created spark session")
+
+    val url = "jdbc:mysql://trainingsrv:3306/practice"
+    val user = "gentooadmin"
+    val pass = "MN3ttXP9LE#?"
+
+    val sourceDf = spark.read.format("jdbc").option("url", url)
+      .option("dbtable", "users").option("user",user)
+      .option("password", pass).load()
+    sourceDf.show()
+
 
   }
 

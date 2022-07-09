@@ -1,5 +1,5 @@
 import scala.io.StdIn.readLine
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SaveMode, SparkSession}
 import org.apache.log4j.{Level, Logger}
 
 object testing extends App {
@@ -42,13 +42,24 @@ object testing extends App {
     .option("dbtable", "users").option("user", user)
     .option("password", pass).load()
   println("sourceDf:")
-  sourceDf.show()
+  //sourceDf.show()
 
   println("\n")
+
+  val df4 = sourceDf.toDF
+  df4.show()
+/*
+  df4.write.mode(SaveMode.Overwrite).format("jdbc").option("url",url)
+    //df4.write.mode(SaveMode.Ignore).format("jdbc").option("url",url)
+    .option("dbtable","monero").option("user",user)
+    .option("password",pass).save()
+  sourceDf.show()
 
   sourceDf.createOrReplaceTempView("users1")
   println("spark.sql query:")
   //spark.sql("SELECT * FROM users1 where user_id=1").show()
   spark.sql("SELECT * FROM users1 WHERE id = 1").show()
+
+ */
 
 }
