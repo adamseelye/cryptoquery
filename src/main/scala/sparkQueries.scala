@@ -1,6 +1,6 @@
 import scala.io.StdIn.readLine
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SaveMode, SparkSession}
 
 object sparkQueries extends App {
   // def <constructor>
@@ -33,6 +33,9 @@ object sparkQueries extends App {
 
   def login(): Unit = {
     val checkedPwd = checkPwd()
+
+
+
 
     if (checkedPwd == "true") { // use this for login logic
       println("Password Success").toString
