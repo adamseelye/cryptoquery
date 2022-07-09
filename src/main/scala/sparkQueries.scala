@@ -29,24 +29,84 @@ object sparkQueries extends App {
     val sourceDf = spark.read.format("jdbc").option("url", url)
       .option("dbtable", "users").option("user", user)
       .option("password", pass).load()
-    //sourceDf.show()
-
-    df4.write.mode(SaveMode.Append).format("jdbc").option("url",url)
-      //df4.write.mode(SaveMode.Ignore).format("jdbc").option("url",url)
-      .option("dbtable","users").option("user",user)
-      .option("password",pass).save()
-    sourceDf.show()
+      sourceDf.show()
   }
 
 
+  /*
+  val spark = SparkSession
+      .builder
+      .appName("hello hive")
+      .config("spark.master", "local[*]")
+      //.config("spark.driver.allowMultipleContexts","true")
+      .enableHiveSupport()
+      .getOrCreate()
+    Logger.getLogger("org").setLevel(Level.ERROR)
+    println("created spark session")
+    var dfload = spark.read.csv("hdfs://localhost:9000/user/will/people.csv")
+    dfload.createOrReplaceTempView("people")
+    dfload.show()
+    spark.sql("SELECT * FROM people").show()
+
+    //val driver = com.mysql.jdbc.driver
+    val url = "jdbc:mysql://localhost:3306/test"
+    val user = "root"
+    val pass = "p4ssword"
+
+    val sourceDf=spark.read.format("jdbc").option("url",url)
+      .option("dbtable","users").option("user",user)
+      .option("password",pass).load()
+    sourceDf.show()
+
+    sourceDf.createOrReplaceTempView("users1")
+    spark.sql("SELECT * FROM users1 where user_id=1").show()
+
+    val sql="select * from users where user_id=2"
+    val sourceDf2=spark.read.format("jdbc").option("url",url)
+      .option("dbtable",s"( $sql ) as t").option("user",user)
+      .option("password",pass).load()
+    sourceDf2.show()
+   */
+
+
   def login(): Unit = {
-    val checkedPwd = checkPwd()
+    val uid_in = readLine("Please enter your username: ")
+    //val uid_in = "adam"
+    val check_pass = readLine("Please enter your password: ")
+
+    val spark = SparkSession
+      .builder
+      .appName("Spark Queries")
+      .master("spark://trainingsrv:7077")
+      .config("spark.master", "local[*]")
+      .config("spark.driver.allowMultipleContexts", "true")
+      .enableHiveSupport()
+      .getOrCreate()
+    Logger.getLogger("org").setLevel(Level.ERROR)
+    println("created spark session")
+
+    val url = "jdbc:mysql://trainingsrv:3306/practice"
+    val user = "gentooadmin"
+    val pass = "MN3ttXP9LE#?"
+
+    val sourceDf = spark.read.format("jdbc").option("url", url)
+      .option("dbtable", "users").option("user", user)
+      .option("password", pass).load()
+
+    sourceDf.createOrReplaceTempView("users1")
+    println("spark.sql query:")
+    spark.sql(s"SELECT * FROM users1 WHERE uid = '$uid_in'").show()
+    println("dataframe:")
+    val db_pass = spark.sql(s"SELECT `password` FROM users1 WHERE uid = '$uid_in'").toDF.first().getString(0)
+
+    val checkedPwd = crypto.checkHash(check_pass, db_pass)
 
     if (checkedPwd == "true") { // use this for login logic
       println("Password Success").toString
     } else {
       println("Password Failure").toString
     }
+
   }
 
   def logout(): Unit = {
@@ -76,11 +136,6 @@ object sparkQueries extends App {
     println("This command may only be run once")
     println("The program will exit if an Admin user already exists")
 
-  }
-
-  def checkPwd(): String = {
-    val check_pass = readLine("Please enter your password: ")
-    crypto.checkHash(check_pass)
   }
 
   def deleteUser (): Unit = {

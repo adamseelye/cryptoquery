@@ -9,12 +9,9 @@ object crypto extends App {
     p.bcryptSafeBounded.get
   }
 
-  def checkHash(c: String): String = {
-    val hash = c.bcryptSafeBounded // will need to match with DB hash
-    c.isBcryptedSafeBounded(hash.get).get.toString
-
-
-
+  def checkHash(pwd: String, hash: String): String = {
+    //val hash = c.bcryptSafeBounded // will need to match with DB hash
+    pwd.isBcryptedSafeBounded(hash).get.toString
 
   }
 
