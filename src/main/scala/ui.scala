@@ -44,13 +44,17 @@ object ui {
       }
 
 
-    } else if (choice == "u" || choice == "U") {
-      println("Update user information")
-      updateUser()
-
     } else if (choice == "d" || choice == "D") {
       println("Delete a user account")
-      deleteUser()
+      println("Please log in to continue")
+
+      if (login() == "Success") {
+        deleteUser()
+      } else {
+        println("Login Error")
+        sys.exit(1)
+      }
+
 
     /*} else if (choice == "o" && logged_in = true || choice == "O" && logged_in = true) {
         println("Log Out")
