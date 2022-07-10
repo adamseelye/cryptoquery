@@ -102,13 +102,13 @@ object ui {
     } else if (choice_int == 2) {
       monero.quest2()
     } else if (choice_int == 3) {
-      monero.quest2()
+      monero.quest3()
     } else if (choice_int == 4) {
-      monero.quest2()
+      monero.quest4()
     } else if (choice_int == 5) {
-      monero.quest2()
+      monero.quest5()
     } else if (choice_int == 6) {
-      monero.quest2()
+      monero.quest6()
     } else {
       println("Input error")
       sys.exit(1)
