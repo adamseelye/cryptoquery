@@ -93,14 +93,19 @@ object sparkQueries extends App {
       .option("password", pass).load()
 
     sourceDf.createOrReplaceTempView("users1")
-    spark.sql(s"SELECT * FROM users1 WHERE uid = '$uid_in'").show()
+    //spark.sql(s"SELECT * FROM users1 WHERE uid = '$uid_in'").show()
     val db_pass = spark.sql(s"SELECT `password` FROM users1 WHERE uid = '$uid_in'").toDF.first().getString(0)
+    spark.sql(s"UPDATE `users1` SET `logged_in` = 1 WHERE `uid` = '$uid_in'")
+
 
     val checkedPwd = crypto.checkHash(check_pass, db_pass)
 
     if (checkedPwd == "true") { // use this for login logic
       val success = "Success"
+      val login = spark.sql(s"SELECT uid, logged_in FROM users1 WHERE uid = '$uid_in'").toDF().first()
+      println(login)
       println(success)
+
       return success
     } else {
       val failure = "Failure"
