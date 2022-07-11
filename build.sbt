@@ -13,3 +13,11 @@ libraryDependencies += "org.apache.spark" %% "spark-hive" % "3.2.1"
 libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.29"
 
 libraryDependencies += "de.svenkubiak" % "jBCrypt" % "0.4.3"
+
+val circeVersion = "0.14.2"
+
+libraryDependencies ++= Seq(
+  "io.circe"  %% "circe-core"     % circeVersion,
+  "io.circe"  %% "circe-generic"  % circeVersion,
+  "io.circe"  %% "circe-parser"   % circeVersion
+)

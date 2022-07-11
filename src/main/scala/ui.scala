@@ -71,16 +71,16 @@ object ui {
   }
 
   def xmrQueries(): Unit = {
-    println("Thank you for logging in.")
-    println("We can now begin to analyze the Monero (XMR) blockchain.")
-    println("Monero is a cryptocurrency, much like Bitcoin.")
-    println("However, the key difference between Monero and Bitcoin is")
-    println("that Monero transactions cannot be traced (supposedly) like")
-    println("Bitcoin transactions can. This is great for privacy advocates")
-    println("around the world, but causes problems for law enforcement")
-    println("agencies trying to combat fraud.")
-    println("Here, we will ask some questions based on data we get from")
-    println("interacting with a self-hosted node on the Monero blockchain.")
+    println("Thank you for logging in.\n" +
+      "We can now begin to analyze the Monero (XMR) blockchain.")
+    println("Monero is a cryptocurrency, much like Bitcoin. " +
+      "However, the key difference between Monero and Bitcoin is")
+    println("that Monero transactions cannot be traced (supposedly) like " +
+      "Bitcoin transactions can. This is great for privacy advocates")
+    println("around the world, but causes problems for law enforcement " +
+      "agencies trying to combat fraud.")
+    println("Here, we will ask some questions based on data we get from " +
+      "interacting with a self-hosted node on the Monero blockchain.\n")
     println("~~~\n")
 
     val q_map = Map(1 -> "Who is using XMR?", 2 -> "What kind of activity is happening on the XMR blockchain?",
