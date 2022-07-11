@@ -17,7 +17,7 @@ object sparkQueries extends App {
     Logger.getLogger("org").setLevel(Level.ERROR)
     println("created spark session")
 
-    val url = "jdbc:mysql://trainingsrv:3306/practice"
+    val url = "jdbc:mysql://trainingsrv:3306/project_1"
     val user = "gentooadmin"
     val pass = "MN3ttXP9LE#?"
 
@@ -31,43 +31,6 @@ object sparkQueries extends App {
       .option("password", pass).load()
       sourceDf.show()
   }
-
-
-  /*
-  val spark = SparkSession
-      .builder
-      .appName("hello hive")
-      .config("spark.master", "local[*]")
-      //.config("spark.driver.allowMultipleContexts","true")
-      .enableHiveSupport()
-      .getOrCreate()
-    Logger.getLogger("org").setLevel(Level.ERROR)
-    println("created spark session")
-    var dfload = spark.read.csv("hdfs://localhost:9000/user/will/people.csv")
-    dfload.createOrReplaceTempView("people")
-    dfload.show()
-    spark.sql("SELECT * FROM people").show()
-
-    //val driver = com.mysql.jdbc.driver
-    val url = "jdbc:mysql://localhost:3306/test"
-    val user = "root"
-    val pass = "p4ssword"
-
-    val sourceDf=spark.read.format("jdbc").option("url",url)
-      .option("dbtable","users").option("user",user)
-      .option("password",pass).load()
-    sourceDf.show()
-
-    sourceDf.createOrReplaceTempView("users1")
-    spark.sql("SELECT * FROM users1 where user_id=1").show()
-
-    val sql="select * from users where user_id=2"
-    val sourceDf2=spark.read.format("jdbc").option("url",url)
-      .option("dbtable",s"( $sql ) as t").option("user",user)
-      .option("password",pass).load()
-    sourceDf2.show()
-   */
-
 
   def login(): String = {
     val uid_in = readLine("Please enter your username: ")
@@ -84,7 +47,7 @@ object sparkQueries extends App {
     Logger.getLogger("org").setLevel(Level.ERROR)
     println("created spark session")
 
-    val url = "jdbc:mysql://trainingsrv:3306/practice"
+    val url = "jdbc:mysql://trainingsrv:3306/project_1"
     val user = "gentooadmin"
     val pass = "MN3ttXP9LE#?"
 
@@ -115,14 +78,6 @@ object sparkQueries extends App {
 
   }
 
-  def logout(): Unit = {
-    /*
-    set db login field to false
-    display ('logged out')
-    ui.main(Array())
-     */
-  }
-
   def createUser (): Unit = {
     val uid = readLine("Please enter a username: ")
     val name = readLine("Please enter your name: ")
@@ -141,7 +96,7 @@ object sparkQueries extends App {
     Logger.getLogger("org").setLevel(Level.ERROR)
     println("created spark session")
 
-    val url = "jdbc:mysql://trainingsrv:3306/practice"
+    val url = "jdbc:mysql://trainingsrv:3306/project_1"
     val user = "gentooadmin"
     val pass = "MN3ttXP9LE#?"
 
@@ -174,7 +129,7 @@ object sparkQueries extends App {
     Logger.getLogger("org").setLevel(Level.ERROR)
     println("created spark session")
 
-    val url = "jdbc:mysql://trainingsrv:3306/practice"
+    val url = "jdbc:mysql://trainingsrv:3306/project_1"
     val user = "gentooadmin"
     val pass = "MN3ttXP9LE#?"
 
@@ -211,8 +166,6 @@ object sparkQueries extends App {
   }
 
   def deleteUser (): Unit = {
-    // this needs work
-
     val spark = SparkSession
       .builder
       .appName("Spark Queries")
@@ -225,7 +178,7 @@ object sparkQueries extends App {
     println("created spark session")
     spark.sparkContext.setLogLevel("ERROR")
 
-    val url = "jdbc:mysql://trainingsrv:3306/practice"
+    val url = "jdbc:mysql://trainingsrv:3306/project_1"
     val user = "gentooadmin"
     val pass = "MN3ttXP9LE#?"
 
@@ -245,7 +198,7 @@ object sparkQueries extends App {
 
       val df1 = sourceDf.toDF.filter(s"uid != '$uid'")
       df1.write.mode(SaveMode.Overwrite).format("jdbc").option("url",url)
-        .option("dbtable","monero").option("user",user)
+        .option("dbtable","users").option("user",user)
         .option("password",pass).save()
       sourceDf.show()
 

@@ -15,10 +15,6 @@ object ui {
     println("(L)ogin")
     println("(C)reate Account")
     println("(U)pdate or (D)elete Account")
-    /*
-    if (logged_in = true)
-      println("Log (O)ut")
-     */
     println("(E)xit\n")
 
     val choice = readLine("Please enter here: ")
@@ -44,7 +40,6 @@ object ui {
         sys.exit(1)
       }
 
-
     } else if (choice == "d" || choice == "D") {
       println("Please log in to continue")
 
@@ -55,11 +50,6 @@ object ui {
         sys.exit(1)
       }
 
-
-    /*} else if (choice == "o" && logged_in = true || choice == "O" && logged_in = true) {
-        println("Log Out")
-        logout()
-    */
     } else if (choice == "e" || choice == "E") {
       println("Exiting program")
       sys.exit(0)

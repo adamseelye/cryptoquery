@@ -1,17 +1,11 @@
-import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.SparkSession
-
 import scala.io.StdIn.readLine
 import scala.language.postfixOps
 import sys.process._
 import io.circe.{ACursor, Decoder, HCursor, Json, parser}
-import io.circe.generic.semiauto.deriveDecoder
 import io.circe.parser.parse
 import scala.math.pow
 
 object monero extends App {
-  // should load monero data into hive
-  // could perform operations
   // 6 questions to answer:
   // Who is using XMR? What kinds of activity? What kind of data? Timing Patterns? Centralization? Fraud Analysis?
   // possibly answer "activity associated with bounties"
