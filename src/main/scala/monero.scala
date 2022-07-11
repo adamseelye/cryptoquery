@@ -1,6 +1,8 @@
 import scala.io.StdIn.readLine
 import scala.language.postfixOps
 import sys.process._
+import org.apache.log4j.{Level, Logger}
+import org.apache.spark.sql.{SaveMode, SparkSession}
 import io.circe.{ACursor, Decoder, HCursor, Json, parser}
 import io.circe.parser.parse
 import scala.math.pow
@@ -11,6 +13,17 @@ object monero extends App {
   // possibly answer "activity associated with bounties"
 
   def quest1(): Unit = {
+    val spark = SparkSession
+      .builder
+      .appName("Spark Queries")
+      .master("spark://trainingsrv:7077")
+      .config("spark.master", "local[*]")
+      .config("spark.driver.allowMultipleContexts", "true")
+      .enableHiveSupport()
+      .getOrCreate()
+    Logger.getLogger("org").setLevel(Level.ERROR)
+    println("created spark session")
+
     // What kind of fees does XMR have?
     val get_fee = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_fee_estimate\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
 
@@ -24,6 +37,12 @@ object monero extends App {
     val fee = fee_result.toDouble / pow(10, 12)
     println("The total fee for executing a single transaction with Monero: " + fee + " XMR")
     println("This is worth about: $" + (fee * 130))
+
+    import spark.implicits._
+    val df1 = Seq(fee).toDF("Monero Query Data")
+    df1.show()
+
+    ui.xmrQueries()
 
   }
 
@@ -74,6 +93,7 @@ object monero extends App {
     println("In essence, we can try to find out the identity of those who run Monero nodes, but this will not help unmask")
     println("its daily users.")
 
+    ui.xmrQueries()
 
   }
 
@@ -117,12 +137,14 @@ object monero extends App {
     println("")
     println("This number is the current size of the entire Monero blockchain database, in gigabytes.")
     println("The database includes all actions and metadata. Transactions (most of the data) are around 2kb each.")
-    println(s"Current database size: $db_size")
+    println(s"Current database size: $db_size\n")
 
+    ui.xmrQueries()
 
   }
 
   def quest4(): Unit = {
+
     // What kind of data can we extract from the XMR blockchain?
     val get_con = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_connections\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
     val get_blk = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_block\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
@@ -188,10 +210,14 @@ object monero extends App {
     println("When a hash is found, a reward is paid to the miner who discovered it")
     println("Last block mining reward: " + blk_math + " XMR")
     println("Value in USD: $" + usd)
+    println("\n")
+
+    ui.xmrQueries()
 
   }
 
   def quest5(): Unit = {
+
     // Are there any obvious patterns in the timing of transactions?
     val get_sync = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"sync_info\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
 
@@ -212,16 +238,19 @@ object monero extends App {
     println("It may be advisable to run this command repeatedly to more clearly see any patterns.")
     println("Transaction receive count: " + sync_result1)
     println("Transaction send count: " + sync_result2)
+    println("\n")
+
+    ui.xmrQueries()
 
   }
 
 
 
   def quest6(): Unit = {
+
     // How might Law Enforcement analyze the XMR blockchain for fraud-related activities?
     val get_info = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_info\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
     val get_con = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_connections\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val get_blk = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_block\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
     val get_lbh = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_last_block_header\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
 
     val c_info: Json = parse(get_info).getOrElse(Json.Null)
@@ -305,7 +334,9 @@ object monero extends App {
     println("And with this, we have a number of different methods to attempt to analyze the Monero blockchain,")
     println("as well as perhaps serving as a starting point for a more in-depth analysis.")
     println("")
-    println("Thank you for using CRYPTOQUERY")
+    println("Thank you for using CRYPTOQUERY\n")
+
+    ui.xmrQueries()
 
   }
 

@@ -14,7 +14,7 @@ object ui {
   def main(args: Array[String]): Unit = {
     println("(L)ogin")
     println("(C)reate Account")
-    println("(D)elete Account")
+    println("(D)elete Users")
     println("(E)xit\n")
 
     val choice = readLine("Please enter here: ")
