@@ -138,9 +138,10 @@ object sparkQueries extends App {
       .option("password",pass).load()
 
     sourceDf.createOrReplaceTempView("ck_table")
-    val is_admin = spark.sql(s"SELECT IF (`is_admin` > 0, 1, 0) FROM ck_table WHERE logged_in = '1'").toDF.first().getInt(0)
+    val is_admin = 0
+    //val is_admin = spark.sql(s"SELECT IF (`is_admin` > 0, 1, 0) FROM ck_table WHERE logged_in = '1'").toDF.first().getInt(0)
 
-    if (is_admin == 0) {
+    if (is_admin != 1) {
       println("The Administrator username is 'admin'.")
       val uid = "admin"
       val name = "admin"
