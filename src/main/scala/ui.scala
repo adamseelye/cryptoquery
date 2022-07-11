@@ -25,6 +25,7 @@ object ui {
 
     if (choice == "l" || choice == "L") {
       login()
+      ui.xmrQueries()
 
     } else if (choice == "c" || choice == "C") {
       println("Would you like to create an " +
@@ -83,9 +84,9 @@ object ui {
       "interacting with a self-hosted node on the Monero blockchain.\n")
     println("~~~\n")
 
-    val q_map = Map(1 -> "Who is using XMR?", 2 -> "What kind of activity is happening on the XMR blockchain?",
-      3 -> "What kind of data can we extract from the XMR blockchain?", 4 -> "Are there any obvious patterns in the timing of transactions?",
-      5 -> "Is there evidence for centralization of XMR activity?", 6 -> "How might Law Enforcement analyze the XMR blockchain for fraud-related activities?")
+    val q_map = Map(1 -> "What is the fee for using XMR?", 2 -> "Who is using XMR?", 3 -> "What kind of activity is happening on the XMR blockchain?",
+      4 -> "What kind of data can we extract from the XMR blockchain?", 5 -> "Are there many transactions being sent and received at a given time?",
+      6 -> "How might Law Enforcement analyze the XMR blockchain for fraud-related activities?")
 
     println("We have a list of questions to ask: ")
 

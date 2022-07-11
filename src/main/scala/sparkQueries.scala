@@ -106,8 +106,6 @@ object sparkQueries extends App {
       println(login)
       println(success)
 
-      ui.xmrQueries()
-
       return success
     } else {
       val failure = "Failure"
@@ -243,36 +241,14 @@ object sparkQueries extends App {
     if (is_admin == 1) {
 
       val uid = readLine("Please enter a username: ")
-
       println("\n")
 
       val df1 = sourceDf.toDF.filter(s"uid != '$uid'")
-
-      val df2 = sourceDf
-      //df1.write.mode(SaveMode.Overwrite)
-
-      println("df1:")
-      df1.show()
-
-      println("df2:")
-      df2.show()
-
-      /*
-      //df2.write.mode(SaveMode.Overwrite).format("jdbc").option("url",url)
-      df2.write.mode(SaveMode.Overwrite).format("jdbc").option("url", url)
-        .option("dbtable", "users").option("user", user)
-        .option("password", pass).save()
-
-
-      println("Overwritten sourceDf:")
+      df1.write.mode(SaveMode.Overwrite).format("jdbc").option("url",url)
+        .option("dbtable","monero").option("user",user)
+        .option("password",pass).save()
       sourceDf.show()
 
-      println("\n")
-
-      println("sDf2 overwrite:")
-      df2.show()
-
-       */
     } else if (is_admin == 0) {
       println("Error, must be administrator to delete users")
       sys.exit(1)
@@ -282,40 +258,5 @@ object sparkQueries extends App {
     }
 
   }
-
-  def updateUser (): Unit = {
-    // Do not need this function. Updating the login variable will suffice.
-
-  }
-
-
-  // Reading from a CSV with Spark:
-
-  /*
-  import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.SparkSession
-
-object test2 {
-  def main(args: Array[String]): Unit = {
-    // create a spark session
-    val spark = SparkSession
-      .builder
-      .appName("hello hive")
-      .config("spark.master", "local[*]")
-      .enableHiveSupport()
-      .getOrCreate()
-    Logger.getLogger("org").setLevel(Level.ERROR)
-    println("created spark session")
-    val df1 = spark.read.csv("hdfs://localhost:9000/user/will/people.csv")
-    df1.createOrReplaceTempView("people")
-    spark.sql("SELECT * from people WHERE _c1=23; ").show()
-
-    df1.write.option("path","hdfs://localhost:9000/user/will/test10").saveAsTable("PeopleTable10000")
-    spark.sql("SELECT * FROM PeopleTable10000").show()
-
-
-  }
-}
-   */
 
 }
