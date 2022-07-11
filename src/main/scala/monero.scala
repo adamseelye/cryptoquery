@@ -1,11 +1,13 @@
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
+
 import scala.io.StdIn.readLine
 import scala.language.postfixOps
 import sys.process._
 import io.circe.{ACursor, Decoder, HCursor, Json, parser}
 import io.circe.generic.semiauto.deriveDecoder
 import io.circe.parser.parse
+import scala.math.pow
 
 object monero extends App {
   // should load monero data into hive
@@ -15,6 +17,23 @@ object monero extends App {
   // possibly answer "activity associated with bounties"
 
   def quest1(): Unit = {
+    // What kind of fees does XMR have?
+    val get_fee = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_fee_estimate\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
+
+    val c_fee: Json = parse(get_fee).getOrElse(Json.Null)
+
+    val fee_cursor: HCursor = c_fee.hcursor
+    val fee_json: Decoder.Result[Double] = {
+      fee_cursor.downField("result").get[Double]("fee")
+    }
+    val fee_result = fee_json.productElement(0).toString
+    val fee = fee_result.toDouble / pow(10, 12)
+    println("The total fee for executing a single transaction with Monero: " + fee + " XMR")
+    println("This is worth about: $" + (fee * 130))
+
+  }
+
+  def quest2(): Unit = {
     val spark = SparkSession
       .builder
       .appName("Spark Queries")
@@ -91,7 +110,7 @@ object monero extends App {
 
   }
 
-  def quest2(): Unit = {
+  def quest3(): Unit = {
     val spark = SparkSession
       .builder
       .appName("Spark Queries")
@@ -159,9 +178,8 @@ object monero extends App {
 
   }
 
-  def quest3(): Unit = {
+  def quest4(): Unit = {
     // What kind of data can we extract from the XMR blockchain?
-    // get_connections, others
     val get_con = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_connections\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
     val get_blk = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_block\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
 
@@ -169,7 +187,6 @@ object monero extends App {
     val c_blk: Json = parse(get_blk).getOrElse(Json.Null)
 
     // must use external source of tx hash for relay_tx
-
     println("Unfortunately, it is not possible to automatically retrieve transactions from this node.")
     println("An external source must be used to find transaction hashes; recommended here is xmrchain.net.")
     val tx_hash = readLine("Please enter a transaction hash here: ")
@@ -226,43 +243,130 @@ object monero extends App {
 
   }
 
-  def quest4(): Unit = {
-    // Are there any obvious patterns in the timing of transactions?
-    // get_output_histogram, get_block, relay_tx
-    val get_blk = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_block\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val relay_tx = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"relay_tx\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-
-  }
-
   def quest5(): Unit = {
-    // Is there evidence for centralization of XMR activity?
-    // get_block_count, get_connections, get_info, get_fee_estimate, relay_tx, get_output_distribution
-    val get_blk = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_block_count\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val get_con = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_connections\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val get_info = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_info\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val relay_tx = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"relay_tx\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val get_od = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_output_distribution\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val get_fe = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_fee_estimate\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
+    // Are there any obvious patterns in the timing of transactions?
+    val get_sync = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"sync_info\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
+
+
+    val c_sync: Json = parse(get_sync).getOrElse(Json.Null)
+
+    val sync_cursor: HCursor = c_sync.hcursor
+    val sync_json1: Decoder.Result[Int] = {
+      sync_cursor.downField("result").downField("peers").downField("info").get[Int]("recv_count")
+    }
+    val sync_result1 = sync_json1.productElement(0).toString
+    val sync_json2: Decoder.Result[Int] = {
+      sync_cursor.downField("result").downField("peers").downField("info").get[Int]("send_count")
+    }
+    val sync_result2 = sync_json2.productElement(0).toString
+
+    println("Here, we query the node to see how many transactions are sent and received at a given time.")
+    println("It may be advisable to run this command repeatedly to more clearly see any patterns.")
+    println("Transaction receive count: " + sync_result1)
+    println("Transaction send count: " + sync_result2)
 
   }
+
+
 
   def quest6(): Unit = {
     // How might Law Enforcement analyze the XMR blockchain for fraud-related activities?
-    // basically all commands
     val get_info = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_info\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
     val get_con = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_connections\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
     val get_blk = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_block_count\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val relay_tx = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"relay_tx\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val get_od = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_output_distribution\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val get_fe = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_fee_estimate\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
-    val get_oh = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_output_histogram\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
     val get_lbh = s"curl --digest -u monero:5rHEQJYmGqq0jcvnVvEzkg== -X post -d '{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"get_last_block_header\"}' -H 'Content-Type: application/json' http://127.0.0.1:18081/json_rpc" !!
 
+    val c_info: Json = parse(get_info).getOrElse(Json.Null)
 
-  }
+    val info_cursor: HCursor = c_info.hcursor
+    val info_ocx_json: Decoder.Result[Long] = {
+      info_cursor.downField("result").get[Long]("outgoing_connections_count")
+    }
+    val ocx_result = info_ocx_json.productElement(0).toString
 
-  def summary(): Unit = {
-    // summarize data gathering
+    println("Outgoing connections to a node can tell about who else might be connected to this node;" +
+      "the connections aren't just other nodes, but users on the network as well.")
+    println("Outgoing connections from this node: " + ocx_result)
+
+
+    val c_curled: Json = parse(get_con).getOrElse(Json.Null)
+
+    val c_cursor: HCursor = c_curled.hcursor
+    val c_json: Decoder.Result[String] = {
+      c_cursor.downField("result").downField("connections").downArray.downField("address").as[String]
+    }
+    val j_result = c_json.productElement(0).toString
+    val j_split = j_result.split(":")(0)
+
+
+    val get_geo = s"curl ipinfo.io/$j_split" !!
+    val g_curled: Json = parse(get_geo).getOrElse(Json.Null)
+
+    val g_cursor: HCursor = g_curled.hcursor
+    val g_json1: Decoder.Result[String] = {
+      g_cursor.downField("ip").as[String]
+    }
+    val g_json2: Decoder.Result[String] = {
+      g_cursor.downField("city").as[String]
+    }
+    val g_json3: Decoder.Result[String] = {
+      g_cursor.downField("country").as[String]
+    }
+    val g_json4: Decoder.Result[String] = {
+      g_cursor.downField("org").as[String]
+    }
+
+    println("Again, we have the identifying information of another connected node:")
+    val g_map = Map("IP: " -> g_json1.productElement(0).toString, "City: " -> g_json2.productElement(0).toString,
+      "Country: " -> g_json3.productElement(0).toString, "Internet Service Provider: " -> g_json4.productElement(0).toString)
+
+    for ((k, v) <- g_map) {
+      println(k + v)
+    }
+
+
+    val c_blk: Json = parse(get_blk).getOrElse(Json.Null)
+
+    val blk_cursor: HCursor = c_blk.hcursor
+    val blk_json: Decoder.Result[Long] = {
+      blk_cursor.downField("result").get[Long]("hash")
+    }
+    val blk_result = blk_json.productElement(0).toString
+
+    println("Here we have the identifying hash of the current block. Sleuths may use this to track")
+    println("transactions through time.")
+    println("Current block hash: " + blk_result)
+
+
+    val c_lbh: Json = parse(get_lbh).getOrElse(Json.Null)
+
+    val lbh_cursor: HCursor = c_lbh.hcursor
+    val lbh_json: Decoder.Result[Long] = {
+      lbh_cursor.downField("result").downField("block_header").get[Long]("height")
+    }
+    val lbh_result = lbh_json.productElement(0).toString
+
+    println("Similar to the block hash, this is the current height of the blockchain. This number may")
+    println("be used to reference previously confirmed blocks.")
+    println("Current blockchain height: " + lbh_result)
+
+
+    println("This function, the output histogram, will give a count of the number of times")
+    println("a given face value has been used in a transaction, i.e. 20 XMR has a total of 381483 usage instances.")
+
+    val amount = readLine("Please enter the XMR amount you'd like to check: ")
+    val math = amount * 1000000000
+    val get_oh = s"curl http://127.0.0.1:18081/json_rpc -d '{'jsonrpc':'2.0','id':'0','method':'get_output_histogram','params':{'amounts':[$math]}}' -H 'Content-Type: application/json'" !!
+    val c_hist: Json = parse(get_oh).getOrElse(Json.Null)
+
+    val hist_cursor: HCursor = c_hist.hcursor
+    val hist_json: Decoder.Result[Long] = {
+      hist_cursor.downField("result").downField("histogram").downArray.get[Long]("total_instances")
+    }
+    val hist_result = hist_json.productElement(0).toString
+
+    println("")
+    println("The amount of " + amount + " XMR has a total of " + hist_result + " usage instances" )
 
   }
 
